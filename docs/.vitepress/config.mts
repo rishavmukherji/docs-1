@@ -628,6 +628,35 @@ export default defineConfig({
             // },
           ],
         },
+        {
+          text: 'Neynar',
+          items: [
+            {
+              text: 'Overview',
+              link: '/reference/neynar/index',
+            },
+            {
+              text: 'Feed',
+              link: '/reference/neynar/feed',
+            },
+            {
+              text: 'User profile',
+              link: '/reference/neynar/user',
+            },
+            {
+              text: 'Conversations',
+              link: '/reference/neynar/conversations',
+            },
+            {
+              text: 'Follow graph',
+              link: '/reference/neynar/follow-graph',
+            },
+            {
+              text: 'Signers',
+              link: '/reference/neynar/signers',
+            },
+          ]
+        }
       ],
     },
     socialLinks: [
