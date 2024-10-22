@@ -32,12 +32,12 @@ import { NobleEd25519Signer } from "@farcaster/hub-nodejs";
 const fid = 6841; //replace
 const privateKey = 'secret'; // replace
 const publicKey = 'pubkey'; // replace
-const signer = new NobleEd25519Signer(privateKey);
+const signer = new NobleEd25519Signer(new Uint8Array(Buffer.from(privateKey)));
 
 const header = {
-	fid,
-	type: 'app_key',
-	key: publicKey
+  fid,
+  type: 'app_key',
+  key: publicKey
 };
 const encodedHeader = Buffer.from(JSON.stringify(header)).toString('base64url');
 
@@ -45,9 +45,13 @@ const payload = { exp: Math.floor(Date.now() / 1000) + 300 }; // 5 minutes
 const encodedPayload = Buffer.from(JSON.stringify(payload)).toString('base64url');
 
 const signatureResult = await signer.signMessageHash(Buffer.from(`${encodedHeader}.${encodedPayload}`, 'utf-8'));
+if (signatureResult.isErr()) {
+  throw new Error("Failed to sign message");
+}
+
 const encodedSignature = Buffer.from(signatureResult.value).toString("base64url");
 
-const authToken = encodedHeader + "." + encodedPayload "." + encodedSignature;
+const authToken = encodedHeader + "." + encodedPayload + "." + encodedSignature;
 
 await got.post(
   "https://api.warpcast.com/fc/channel-follows",
@@ -78,13 +82,16 @@ Returns: a `channels` array with properties:
 - `url` - FIP-2 `parentUrl` used for main casts in the channel
 - `name` - friendly name displayed to users (called 'Display name' when editing a channel)
 - `description` - description of the channel, if present
-- `imageUrl` - URL to the channel avatar
+- `descriptionMentions` - an array of the user fids mentioned in the description. Multiple mentions result in multiple entries.
+- `descriptionMentionsPositions` - the indexes within the description where the mentioned users (from `descriptionMentions`) appear.
+  This array is always the same size as `descriptionMentions`. The mention is placed to the left of any existing character at that index.
 - `leadFid` - fid of the user who created the channel, if present
 - `moderatorFids` - fids of the moderators (under new channel membership scheme)
 - `createdAt` - UNIX time when channel was created, in seconds
 - `followerCount` - number of users following the channel
 - `memberCount` - number of members of the channel, including the owner and moderators
 - `pinnedCastHash` - hash of the cast pinned in the channel, if present
+- `publicCasting` - `true`/`false` indicating whether channel allows anybody to cast into it, or only members
 - `externalLink` - external link that appears in the header in Warpcast, if present, with 2 properties:
   - `title` - title shown in the channel header
   - `url` - url of the link
@@ -94,23 +101,32 @@ Returns: a `channels` array with properties:
   "result": {
     "channels": [
       {
-        "id": "welcome",
-        "url": "chain://eip155:7777777/erc721:0x8f0055447ffae257e9025b781643127ca604baaa",
-        "name": "Welcome",
-        "description": "A place to welcome new users to Farcaster! Share how you know each other, tag folks that should meet them, and add a photo or two!",
-        "imageUrl": "https://ipfs.decentralized-content.com/ipfs/bafkreieraqfkny7bttxd7h7kmnz6zy76vutst3qbjgjxsjnvrw7z3i2n7i",
-        "leadFid": 1593,
-        "moderatorFids": [
-          5448,
-          3
+        "id": "illustrations",
+        "url": "https://warpcast.com/~/channel/illustrations",
+        "name": "illustrations",
+        "description": "Share your wips, sketches, arts, drops, GMs, artworks you adore or collected — all content related to illustration, tag  to join ⊹ ࣪ ˖ cover by ",
+        "descriptionMentions": [
+          367850,
+          335503
         ],
-        "createdAt": 1691015606,
-        "followerCount": 3622,
-        "memberCount": 123,
-        "pinnedCastHash": "0x3349beda5fb6232ab50d7b0e4d49da3d56814771",
+        "descriptionMentionsPositions": [
+          122,
+          151
+        ],
+        "imageUrl": "https://imagedelivery.net/BXluQx4ige9GuW0Ia56BHw/7721c951-b0ed-44ee-aa9c-c31507b69c00/original",
+        "headerImageUrl": "https://imagedelivery.net/BXluQx4ige9GuW0Ia56BHw/64efe955-c3ab-4aad-969d-1aed978a3e00/original",
+        "leadFid": 367850,
+        "moderatorFids": [
+          367850
+        ],
+        "createdAt": 1709753166,
+        "followerCount": 2361,
+        "memberCount": 300,
+        "pinnedCastHash": "0x3ef52987ccacd89af096a753c07efcd55a93e143",
+        "publicCasting": false,
         "externalLink": {
-          "title": "Join",
-          "url": "https://www.some.com"
+          "title": "/creatorssupport",
+          "url": "https://warpcast.com/~/channel/creators-support"
         }
       },
       ...
@@ -125,7 +141,7 @@ Example:
 curl 'https://api.warpcast.com/v2/all-channels'
 ```
 
-## Get Channel
+## Get a Channel
 
 `GET /v1/channel`
 
@@ -141,20 +157,24 @@ Returns: a single channel object, as documented in the "Get All Channels" endpoi
 {
   "result": {
     "channel": {
-      "id": "welcome",
-      "url": "chain://eip155:7777777/erc721:0x8f0055447ffae257e9025b781643127ca604baaa",
-      "name": "Welcome",
-      "description": "A place to welcome new users to Farcaster! Share how you know each other, tag folks that should meet them, and add a photo or two!",
-      "imageUrl": "https://ipfs.decentralized-content.com/ipfs/bafkreieraqfkny7bttxd7h7kmnz6zy76vutst3qbjgjxsjnvrw7z3i2n7i",
-      "leadFid": 1593,
-      "moderatorFids": [5448, 3],
-      "createdAt": 1691015606,
-      "followerCount": 3622,
-      "memberCount": 123,
-      "pinnedCastHash": "0x3349beda5fb6232ab50d7b0e4d49da3d56814771",
+      "id": "illustrations",
+      "url": "https://warpcast.com/~/channel/illustrations",
+      "name": "illustrations",
+      "description": "Share your wips, sketches, arts, drops, GMs, artworks you adore or collected — all content related to illustration, tag  to join ⊹ ࣪ ˖ cover by ",
+      "descriptionMentions": [367850, 335503],
+      "descriptionMentionsPositions": [122, 151],
+      "imageUrl": "https://imagedelivery.net/BXluQx4ige9GuW0Ia56BHw/7721c951-b0ed-44ee-aa9c-c31507b69c00/original",
+      "headerImageUrl": "https://imagedelivery.net/BXluQx4ige9GuW0Ia56BHw/64efe955-c3ab-4aad-969d-1aed978a3e00/original",
+      "leadFid": 367850,
+      "moderatorFids": [367850],
+      "createdAt": 1709753166,
+      "followerCount": 2361,
+      "memberCount": 300,
+      "pinnedCastHash": "0x3ef52987ccacd89af096a753c07efcd55a93e143",
+      "publicCasting": false,
       "externalLink": {
-        "title": "Join",
-        "url": "https://www.some.com"
+        "title": "/creatorssupport",
+        "url": "https://warpcast.com/~/channel/creators-support"
       }
     }
   }
@@ -162,7 +182,7 @@ Returns: a single channel object, as documented in the "Get All Channels" endpoi
 ```
 
 ```bash
-curl 'https://api.warpcast.com/v1/channel?channelId=welcome'
+curl 'https://api.warpcast.com/v1/channel?channelId=illustrations'
 ```
 
 ## Get Channel Followers
@@ -417,16 +437,59 @@ Example:
 curl 'https://api.warpcast.com/fc/moderated-casts?channelId=welcome'
 ```
 
-## Get Channel Banned Users
+## Get Channel Restricted Users
 
-`GET /fc/channel-banned-users`
+`GET /fc/channel-restricted-users`
 
-Get users banned from channels (=members who access was revoked by a moderator). Such users are not able to join via an invite link. Ordered by the time when the user was banned, descending. Paginated. Not authenticated.
+Get users restricted from joining channels via an invite link (they can still be manually invited). Users get into this state automatically after being removed as a member, and after being unbanned. Users get out of this state after being invited (even if they haven't accepted/declined the invite), and being banned. It is not possible to restrict or unrestrict users directly. Ordered by the time when the user was restricted, descending. Paginated. Not authenticated.
 
 **Note:**
 
-- Replies by banned users are still visible below the fold
-- This endpoint returns only active bans. If a user was banned and subsequently added back as a member by a moderator, the ban entry from this endpoint will disappear.
+- Replies by restricted users are still visible below the fold
+- This endpoint returns only actively restricted users. If a user was restricted and subsequently invited back or banned, the entry from this endpoint will disappear.
+
+Query parameters:
+
+- `channelId` - (optional) channel id to filter by
+- `fid` - (optional) user fid to filter by
+
+Returns: a `restrictedUsers` array:
+
+- `fid` - the fid of the restricted user
+- `channelId` - the id of the channel the user is restricted from
+- `restrictedAt` - UNIX time when the restriction started, in seconds
+
+```json
+{
+  "result": {
+    "restrictedUsers": [
+      {
+        "fid": 1234,
+        "channelId": "welcome",
+        "restrictedAt": 1727767637
+      },
+      ...
+    ]
+  },
+  "next": { "cursor": "..." }
+}
+```
+
+Example:
+
+```bash
+curl 'https://api.warpcast.com/fc/channel-restricted-users?channelId=memes'
+```
+
+## Get Channel Banned Users
+
+`GET /fc/channel-bans`
+
+Get users banned from channels. Ordered by the time when the user was banned, descending. Paginated. Not authenticated.
+
+**Note:**
+
+- This endpoint returns only active bans. If a user is unbanned, the entry from this endpoint will disappear.
 
 Query parameters:
 
@@ -437,7 +500,7 @@ Returns: a `bannedUsers` array:
 
 - `fid` - the fid of the banned user
 - `channelId` - the id of the channel the user is banned from
-- `bannedAt` - UNIX time when the active ban started, in seconds
+- `bannedAt` - UNIX time when the ban started, in seconds
 
 ```json
 {
@@ -458,7 +521,61 @@ Returns: a `bannedUsers` array:
 Example:
 
 ```bash
-curl 'https://api.warpcast.com/fc/channel-banned-users?channelId=memes'
+curl 'https://api.warpcast.com/fc/channel-bans?channelId=memes'
+```
+
+## Ban User From Channel
+
+`POST /fc/channel-bans`
+
+Ban a user from a channel. A banned user can no longer reply to channel casts, and all their existing replies are hidden. Authenticated.
+
+The caller must own or moderate the channel.
+
+Body parameters:
+
+- `channelId` - the id of the channel to ban the user from
+- `banFid` - the fid of the user to ban
+
+Returns:
+
+- `success: true`
+
+Example:
+
+```bash
+curl -X POST \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer <Auth Token>' \
+  -d '{ "channelId": "memes", "banFid": 1234 }' \
+  https://api.warpcast.com/fc/channel-bans
+```
+
+## Unban User From Channel
+
+`DELETE /fc/channel-bans`
+
+Unban a user from a channel. All the user's existing replies will become visible and they will be able to reply again (appearing below the fold). The user goes into restricted state. Authenticated.
+
+The caller must own or moderate the channel.
+
+Body parameters:
+
+- `channelId` - the id of the channel to unban the user from
+- `unbanFid` - the fid of the user to unban
+
+Returns:
+
+- `success: true`
+
+Example:
+
+```bash
+curl -X DELETE \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer <Auth Token>' \
+  -d '{ "channelId": "memes", "banFid": 1234 }' \
+  https://api.warpcast.com/fc/channel-bans
 ```
 
 ## Follow/Unfollow Channel
@@ -605,7 +722,7 @@ curl -X POST \
 
 `PUT /fc/pinned-casts`
 
-Pin (and optionally announce) a cast to a channel, replacing any currently pinned cast. If the provided cast is already pinned, nothing changes (and success is returned).
+Pin (and optionally announce) a cast to a channel, replacing any currently pinned cast. If the provided cast is already pinned, nothing changes (and success is returned). Authenticated.
 
 Body parameters:
 
@@ -630,7 +747,7 @@ curl -X PUT \
 
 `DELETE /fc/pinned-casts`
 
-Unpin a cast from a channel.
+Unpin a cast from a channel. Does not remove existing announcement notifications. Authenticated.
 
 Body parameters (**provide only one of the two**):
 
@@ -752,7 +869,7 @@ curl 'https://api.warpcast.com/v2/discover-composer-actions?list=top&limit=10'
 
 ## Get Blocked Users
 
-`GET /v1/blocked-users`
+`GET /fc/blocked-users`
 
 Warpcast allows users to block others from replying, quoting and mentioning them.
 
@@ -787,5 +904,97 @@ Returns: a `blockedUsers` array with properties:
 Example:
 
 ```bash
-curl 'https://api.warpcast.com/v1/blocked-users'
+curl 'https://api.warpcast.com/fc/blocked-users'
+```
+
+## Block User
+
+`POST /fc/blocked-users`
+
+Block a user. Authenticated.
+
+Body parameters:
+
+- `blockFid` - the fid of the user to block
+
+Returns:
+
+- `success: true`
+
+Example:
+
+```bash
+curl -X POST \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer <Auth Token>' \
+  -d '{ "blockFid": 1234 }' \
+  https://api.warpcast.com/fc/blocked-users
+```
+
+## Unblock User
+
+`DELETE /fc/blocked-users`
+
+Unblock a user. Authenticated.
+
+Body parameters:
+
+- `unblockFid` - the fid of the user to unblock
+
+Returns:
+
+- `success: true`
+
+Example:
+
+```bash
+curl -X DELETE \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer <Auth Token>' \
+  -d '{ "unblockFid": 1234 }' \
+  https://api.warpcast.com/fc/blocked-users
+```
+
+## Get Account Verifications
+
+`GET /fc/account-verifications`
+
+### This endpoint is not stable (beta) and very likely to have breaking changes in the future.
+
+List of account verifications attested by Warpcast. Ordered by the time when the verification occurred, descending. Paginated. Not authenticated.
+
+Query parameters:
+
+- `fid` (**optional**) - limit the response to specific user
+
+Returns: a `verifications` array:
+
+- `fid` - account Farcaster id
+- `platform` - platform of the verification `'x'`
+- `platformId` - string value representing platform identifier (generated by the platform, not Warpcast)
+- `platformUsername` - string value representing platform username
+- `verifiedAt` - UNIX time when verification took place, in seconds
+
+```json
+{
+  "result": {
+    "verifications": [
+      {
+        "fid": 3,
+        "platform": "x",
+        "platformId": "9615352",
+        "platformUsername": "dwr",
+        "verifiedAt": 1728505748
+      },
+      ...
+    ]
+  },
+  "next": { "cursor": "..." }
+}
+```
+
+Example:
+
+```bash
+curl 'https://api.warpcast.com/fc/account-verifications'
 ```
