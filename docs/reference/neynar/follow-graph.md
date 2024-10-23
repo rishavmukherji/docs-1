@@ -23,7 +23,7 @@ i.e. Alice's followers
 curl --request GET \
      --url 'https://api.neynar.com/v2/farcaster/followers?fid=3&viewer_fid=3&sort_type=algorithmic&limit=1' \
      --header 'accept: application/json' \
-     --header 'api_key: NEYNAR_FARCASTER_DOCS'
+     --header 'x-api-key: NEYNAR_API_DOCS'
 ```
 
 #### Following for a user ([link](https://docs.neynar.com/reference/following-v2))
@@ -34,7 +34,7 @@ i.e. list of users Alice follows
 curl --request GET \
      --url 'https://api.neynar.com/v2/farcaster/following?fid=2&viewer_fid=3&sort_type=algorithmic&limit=1' \
      --header 'accept: application/json' \
-     --header 'api_key: NEYNAR_FARCASTER_DOCS'
+     --header 'x-api-key: NEYNAR_API_DOCS'
 ```
 
 Both above APIs return an array of follow objects
@@ -91,7 +91,7 @@ i.e. list of suggested users Alice should follow
 curl --request GET \
      --url 'https://api.neynar.com/v2/farcaster/following/suggested?fid=2&viewer_fid=3&limit=1' \
      --header 'accept: application/json' \
-     --header 'api_key: NEYNAR_FARCASTER_DOCS'
+     --header 'x-api-key: NEYNAR_API_DOCS'
 ```
 
 Returns a list of user objects
@@ -143,7 +143,7 @@ i.e. if Alice is looking at Bob's profile, Alice will see the users she follows 
 curl --request GET \
      --url 'https://api.neynar.com/v2/farcaster/followers/relevant?target_fid=3&viewer_fid=2' \
      --header 'accept: application/json' \
-     --header 'api_key: NEYNAR_FARCASTER_DOCS'
+     --header 'x-api-key: NEYNAR_API_DOCS'
 ```
 
 Returns a set of hydrated follow objects for top relevant followers and dehydrated user objects for the remaining followers

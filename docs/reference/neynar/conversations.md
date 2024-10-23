@@ -23,7 +23,7 @@ The hostname is always `https://api.neynar.com`.
 curl --request GET \
      --url 'https://api.neynar.com/v2/farcaster/cast/conversation?identifier=https%3A%2F%2Fwarpcast.com%2Frish%2F0x9288c1&type=url&reply_depth=1&include_chronological_parent_casts=false&viewer_fid=3&sort_type=algorithmic&fold=above&limit=1' \
      --header 'accept: application/json' \
-     --header 'api_key: NEYNAR_FARCASTER_DOCS'
+     --header 'x-api-key: NEYNAR_API_DOCS'
 ```
 
 ## Response
