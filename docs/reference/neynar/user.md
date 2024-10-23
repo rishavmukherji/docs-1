@@ -1,6 +1,8 @@
-# Neynar Feed API
+# Neynar User API
 
-This page documents how to get full user data using fid, username or wallet address.
+`GET /v2/farcaster/user`
+
+This page documents how to get full user profile data using fid, username or wallet address.
 
 The hostname is always `https://api.neynar.com`.
 
@@ -81,3 +83,5 @@ All above API requests response with either a singular or an array of user objec
   }
 }
 ```
+
+To create new user accounts on Farcaster, see [here](https://docs.neynar.com/docs/how-to-create-a-new-farcaster-account-with-neynar).

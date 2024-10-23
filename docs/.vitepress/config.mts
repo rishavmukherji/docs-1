@@ -660,10 +660,6 @@ export default defineConfig({
               text: 'Follow graph',
               link: '/reference/neynar/follow-graph',
             },
-            {
-              text: 'Signers',
-              link: '/reference/neynar/signers',
-            },
           ]
         }
       ],

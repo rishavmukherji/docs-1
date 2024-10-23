@@ -1,5 +1,7 @@
 # Neynar Feed API
 
+`GET v2/farcaster/feed`
+
 This page documents how to build three different kinds of feeds with Neynar APIs
 
 - Following feed - shows content from people you follow ranked in descending chronological order
