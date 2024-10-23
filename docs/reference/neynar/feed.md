@@ -31,6 +31,7 @@ curl --request GET \
      --url 'https://api.neynar.com/v2/farcaster/feed/following?fid=5650&viewer_fid=5650&with_recasts=true&limit=1' \
      --header 'accept: application/json' \
      --header 'x-api-key: NEYNAR_API_DOCS'
+     --header 'x-client-id: docs.farcaster.xyz'
 ```
 
 #### For You
@@ -42,6 +43,7 @@ curl --request GET \
      --url 'https://api.neynar.com/v2/farcaster/feed/for_you?fid=5650&viewer_fid=5650&provider=openrank&limit=1' \
      --header 'accept: application/json' \
      --header 'x-api-key: NEYNAR_API_DOCS'
+     --header 'x-client-id: docs.farcaster.xyz'
 ```
 
 #### Channel feed
@@ -51,6 +53,7 @@ curl --request GET \
      --url 'https://api.neynar.com/v2/farcaster/feed/channels?channel_ids=warpcast&with_recasts=true&viewer_fid=3&with_replies=false&members_only=true&limit=1' \
      --header 'accept: application/json' \
      --header 'x-api-key: NEYNAR_API_DOCS'
+     --header 'x-client-id: docs.farcaster.xyz'
 ```
 
 ## Response
