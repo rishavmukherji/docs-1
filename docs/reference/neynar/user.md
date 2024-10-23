@@ -23,7 +23,7 @@ curl --request GET \
      curl --request GET \
      --url 'https://api.neynar.com/v2/farcaster/user/bulk?fids=194%2C%20191%2C%206131&viewer_fid=3' \
      --header 'accept: application/json' \
-     --header 'x-api-key: NEYNAR_API_DOCS'
+     --header 'x-api-key: NEYNAR_API_DOCS' \
      --header 'x-client-id: docs.farcaster.xyz'
 ```
 
@@ -35,8 +35,7 @@ Fetching for [vitalik.eth](https://warpcast.com/vitalik.eth). Full API documenta
 curl --request GET \
      --url 'https://api.neynar.com/v2/farcaster/user/bulk-by-address?addresses=0xa6a8736f18f383f1cc2d938576933e5ea7df01a1%2C0x7cac817861e5c3384753403fb6c0c556c204b1ce&address_types=custody_address%2Cverified_address&viewer_fid=3' \
      --header 'accept: application/json' \
-     --header 'x-api-key: NEYNAR_API_DOCS'
-     --header 'x-client-id: docs.farcaster.xyz'
+     --header 'x-api-key: NEYNAR_API_DOCS' \
      --header 'x-client-id: docs.farcaster.xyz'
 ```
 
@@ -46,7 +45,7 @@ curl --request GET \
 curl --request GET \
      --url 'https://api.neynar.com/v2/farcaster/user/by_username?username=neynar&viewer_fid=3' \
      --header 'accept: application/json' \
-     --header 'x-api-key: NEYNAR_API_DOCS'
+     --header 'x-api-key: NEYNAR_API_DOCS' \
      --header 'x-client-id: docs.farcaster.xyz'
 ```
 

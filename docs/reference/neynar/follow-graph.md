@@ -23,7 +23,7 @@ i.e. Alice's followers
 curl --request GET \
      --url 'https://api.neynar.com/v2/farcaster/followers?fid=3&viewer_fid=3&sort_type=algorithmic&limit=1' \
      --header 'accept: application/json' \
-     --header 'x-api-key: NEYNAR_API_DOCS'
+     --header 'x-api-key: NEYNAR_API_DOCS' \
      --header 'x-client-id: docs.farcaster.xyz'
 ```
 
@@ -35,7 +35,7 @@ i.e. list of users Alice follows
 curl --request GET \
      --url 'https://api.neynar.com/v2/farcaster/following?fid=2&viewer_fid=3&sort_type=algorithmic&limit=1' \
      --header 'accept: application/json' \
-     --header 'x-api-key: NEYNAR_API_DOCS'
+     --header 'x-api-key: NEYNAR_API_DOCS' \
      --header 'x-client-id: docs.farcaster.xyz'
 ```
 
@@ -93,7 +93,7 @@ i.e. list of suggested users Alice should follow
 curl --request GET \
      --url 'https://api.neynar.com/v2/farcaster/following/suggested?fid=2&viewer_fid=3&limit=1' \
      --header 'accept: application/json' \
-     --header 'x-api-key: NEYNAR_API_DOCS'
+     --header 'x-api-key: NEYNAR_API_DOCS' \
      --header 'x-client-id: docs.farcaster.xyz'
 ```
 
@@ -146,7 +146,7 @@ i.e. if Alice is looking at Bob's profile, Alice will see the users she follows 
 curl --request GET \
      --url 'https://api.neynar.com/v2/farcaster/followers/relevant?target_fid=3&viewer_fid=2' \
      --header 'accept: application/json' \
-     --header 'x-api-key: NEYNAR_API_DOCS'
+     --header 'x-api-key: NEYNAR_API_DOCS' \
      --header 'x-client-id: docs.farcaster.xyz'
 ```
 
