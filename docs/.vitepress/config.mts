@@ -650,7 +650,26 @@ export default defineConfig({
             },
             {
               text: 'User profile',
-              link: '/reference/neynar/user',
+              collapsed: true,
+              items: [
+                {
+                  text: 'Overview',
+                  link: '/reference/neynar/user',
+                }, 
+                {
+                  text: 'By FID',
+                  link: '/reference/neynar/user#user-by-fid-link',
+                },
+                {
+                  text: 'By address',
+                  link: '/reference/neynar/user#user-by-address-link',
+                },
+                {
+                  text: 'By username',
+                  link: '/reference/neynar/user#user-by-name-link',
+                },
+                
+              ],
             },
             {
               text: 'Conversations',
