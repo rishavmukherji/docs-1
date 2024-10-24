@@ -18,6 +18,8 @@ The hostname is always `https://api.neynar.com`.
 
 #### User by fid ([link](https://docs.neynar.com/reference/user-bulk))
 
+Can be used for one or many FIDs to fetch profiles in bulk.
+
 ```bash
 curl --request GET \
      curl --request GET \
@@ -29,7 +31,7 @@ curl --request GET \
 
 #### User by address ([link](https://docs.neynar.com/reference/user-bulk-by-address))
 
-Fetching for [vitalik.eth](https://warpcast.com/vitalik.eth). Full API documentation [here](https://docs.neynar.com/reference/feed-for-you).
+Can be used for one or many addresses to fetch profiles in bulk.
 
 ```bash
 curl --request GET \
