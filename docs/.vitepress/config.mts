@@ -310,7 +310,7 @@ export default defineConfig({
           items: [
             {
               text: 'Neynar',
-              link: '/reference/neynar/index',
+              link: '/reference/third-party/neynar/index',
             }
           ]
         }
@@ -638,88 +638,13 @@ export default defineConfig({
           ],
         },
         {
-          text: 'Neynar',
+          text: 'Third party services',
           items: [
             {
-              text: 'Overview',
-              link: '/reference/neynar/index',
+              text: 'Neynar',
+              link: '/reference/third-party/neynar/index',
             },
-            {
-              text: 'Feed',
-              collapsed: true,
-              items: [
-                {
-                  text: 'Overview',
-                  link: '/reference/neynar/feed',
-                },
-                {
-                  text: 'Following',
-                  link: '/reference/neynar/feed#following',
-                },
-                {
-                  text: 'For you',
-                  link: '/reference/neynar/feed#for-you',
-                },
-                {
-                  text: 'Channel',
-                  link: '/reference/neynar/feed#channel-feed',
-                }
-              ],
-            },
-            {
-              text: 'User profile',
-              collapsed: true,
-              items: [
-                {
-                  text: 'Overview',
-                  link: '/reference/neynar/user',
-                }, 
-                {
-                  text: 'By FID',
-                  link: '/reference/neynar/user#user-by-fid-link',
-                },
-                {
-                  text: 'By address',
-                  link: '/reference/neynar/user#user-by-address-link',
-                },
-                {
-                  text: 'By username',
-                  link: '/reference/neynar/user#user-by-name-link',
-                },
-                
-              ],
-            },
-            {
-              text: 'Conversations',
-              link: '/reference/neynar/conversations',
-            },
-            {
-              text: 'Follow graph',
-              collapsed: true,
-              items: [
-                {
-                  text: 'Overview',
-                  link: '/reference/neynar/follow-graph',
-                }, 
-                {
-                  text: 'Followers',
-                  link: '/reference/neynar/follow-graph#followers-for-a-user-link',
-                },
-                {
-                  text: 'Following',
-                  link: '/reference/neynar/follow-graph#following-for-a-user-link',
-                },
-                {
-                  text: 'Suggested',
-                  link: '/reference/neynar/follow-graph#suggested-followers-for-a-user-link',
-                },
-                {
-                  text: 'Relevant',
-                  link: '/reference/neynar/follow-graph#relevant-followers-for-a-user-link',
-                },
-              ],
-            },
-          ]
+          ],
         }
       ],
     },
